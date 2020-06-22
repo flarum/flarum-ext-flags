@@ -21,7 +21,7 @@ class Flag extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'dismissed_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -37,5 +37,13 @@ class Flag extends AbstractModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dismisser()
+    {
+        return $this->belongsTo(User::class, 'dismissed_by_user_id');
     }
 }

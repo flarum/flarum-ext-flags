@@ -26,7 +26,8 @@ return [
         ->route('/flags', 'flags', AssertRegistered::class),
 
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__.'/js/dist/admin.js')
+        ->css(__DIR__.'/less/admin.less'),
 
     (new Extend\Routes('api'))
         ->get('/flags', 'flags.index', ListFlagsController::class)
@@ -37,7 +38,10 @@ return [
         ->dateAttribute('read_flags_at'),
 
     (new Extend\Model(Post::class))
-        ->hasMany('flags', Flag::class, 'post_id'),
+        ->relationship('flags', function ($post) {
+            return $post->hasMany(Flag::class, 'post_id')
+                ->whereNull('dismissed_at');
+        }),
 
     new Extend\Locales(__DIR__.'/locale'),
 
